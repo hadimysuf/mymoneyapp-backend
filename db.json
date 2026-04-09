@@ -1,0 +1,239 @@
+{
+  "transactions": [
+    {
+      "id": 1707000000001,
+      "description": "gaji februari",
+      "amount": 5000000,
+      "type": "income",
+      "category_id": 1,
+      "date": "01/02/2026",
+      "month": "2026-02",
+      "timestamp": 1707000000001
+    },
+    {
+      "id": 1707000000002,
+      "description": "bonus project",
+      "amount": 500000,
+      "type": "income",
+      "category_id": 1775645448608,
+      "date": "15/02/2026",
+      "month": "2026-02",
+      "timestamp": 1707000000002
+    },
+    {
+      "id": 1707000000003,
+      "description": "bayar kos feb",
+      "amount": 2000000,
+      "type": "expense",
+      "category_id": 1775644086974,
+      "date": "02/02/2026",
+      "month": "2026-02",
+      "timestamp": 1707000000003
+    },
+    {
+      "id": 1707000000004,
+      "description": "nabung feb",
+      "amount": 1500000,
+      "type": "savings",
+      "category_id": 1775643384306,
+      "date": "03/02/2026",
+      "month": "2026-02",
+      "timestamp": 1707000000004
+    },
+    {
+      "id": 1710000000001,
+      "description": "gaji maret",
+      "amount": 5000000,
+      "type": "income",
+      "category_id": 1,
+      "date": "01/03/2026",
+      "month": "2026-03",
+      "timestamp": 1710000000001
+    },
+    {
+      "id": 1710000000002,
+      "description": "freelance",
+      "amount": 1000000,
+      "type": "income",
+      "category_id": 1775645468095,
+      "date": "05/03/2026",
+      "month": "2026-03",
+      "timestamp": 1710000000002
+    },
+    {
+      "id": 1710000000003,
+      "description": "nabung",
+      "amount": 1000000,
+      "type": "savings",
+      "category_id": 1775643384306,
+      "date": "10/03/2026",
+      "month": "2026-03",
+      "timestamp": 1710000000003
+    },
+    {
+      "id": 1710000000004,
+      "description": "bayar kos maret",
+      "amount": 2400000,
+      "type": "expense",
+      "category_id": 1775644086974,
+      "date": "11/03/2026",
+      "month": "2026-03",
+      "timestamp": 1710000000004
+    },
+    {
+      "id": 1712000000001,
+      "description": "gaji april",
+      "amount": 5000000,
+      "type": "income",
+      "category_id": 1,
+      "date": "01/04/2026",
+      "month": "2026-04",
+      "timestamp": 1712000000001
+    },
+    {
+      "id": 1775645502648,
+      "description": "joki aplikasi",
+      "amount": 1000000,
+      "type": "income",
+      "category_id": 1775645468095,
+      "date": "04/04/2026",
+      "month": "2026-04",
+      "timestamp": 1775645502648
+    },
+    {
+      "id": 1775645585841,
+      "description": "bonus dari bos",
+      "amount": 500000,
+      "type": "income",
+      "category_id": 1775645448608,
+      "date": "08/04/2026",
+      "month": "2026-04",
+      "timestamp": 1775645585841
+    },
+    {
+      "id": 1775661618465,
+      "description": "narik buat makan",
+      "amount": 200000,
+      "type": "savings",
+      "category_id": 1775643384306,
+      "date": "8/4/2026",
+      "month": "2026-04",
+      "timestamp": 1775661618465
+    },
+    {
+      "id": 1775664204084,
+      "description": "hantu",
+      "amount": 100000,
+      "type": "expense",
+      "category_id": 1775664168379,
+      "date": "8/4/2026",
+      "month": "2026-04",
+      "timestamp": 1775664204084
+    },
+    {
+      "id": 1775748755384,
+      "description": "geprek",
+      "amount": 15000,
+      "type": "expense",
+      "category_id": 2,
+      "date": "9/4/2026",
+      "month": "2026-04",
+      "timestamp": 1775748755384
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Gaji",
+      "type": "income"
+    },
+    {
+      "id": 2,
+      "name": "Makanan",
+      "type": "expense"
+    },
+    {
+      "id": 1775643384306,
+      "name": "Tabungan",
+      "type": "savings"
+    },
+    {
+      "id": 1775644086974,
+      "name": "Kos",
+      "type": "expense"
+    },
+    {
+      "id": 1775645448608,
+      "name": "Bonus",
+      "type": "income"
+    },
+    {
+      "id": 1775645468095,
+      "name": "Freelance",
+      "type": "income"
+    },
+    {
+      "id": 1775664168379,
+      "name": "",
+      "type": "expense"
+    }
+  ],
+  "budgets": [
+    {
+      "category_id": 1775644086974,
+      "amount": 2000000,
+      "month": "2026-02",
+      "date": "01/02/2026",
+      "timestamp": 1707000000001
+    },
+    {
+      "category_id": 1775643384306,
+      "amount": 1500000,
+      "month": "2026-02",
+      "date": "01/02/2026",
+      "timestamp": 1707000000002
+    },
+    {
+      "category_id": 2,
+      "amount": 1000000,
+      "month": "2026-02",
+      "date": "01/02/2026",
+      "timestamp": 1707000000003
+    },
+    {
+      "category_id": 1775644086974,
+      "amount": 2400000,
+      "month": "2026-03",
+      "date": "01/03/2026",
+      "timestamp": 1710000000001
+    },
+    {
+      "category_id": 1775643384306,
+      "amount": 1200000,
+      "month": "2026-03",
+      "date": "01/03/2026",
+      "timestamp": 1710000000002
+    },
+    {
+      "category_id": 2,
+      "amount": 600000,
+      "month": "2026-03",
+      "date": "01/03/2026",
+      "timestamp": 1710000000003
+    },
+    {
+      "category_id": 3,
+      "amount": 600000,
+      "month": "2026-03",
+      "date": "01/03/2026",
+      "timestamp": 1710000000004
+    },
+    {
+      "category_id": 2,
+      "amount": 1500000,
+      "month": "2026-04",
+      "timestamp": 1775748653761,
+      "date": "9/4/2026"
+    }
+  ]
+}
