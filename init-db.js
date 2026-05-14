@@ -1,19 +1,5 @@
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+const path = require('path');
+const { createDb } = require('./src/data/db');
 
-const adapter = new FileSync('db.json');
-const db = low(adapter);
-
-// Set data default
-db.defaults({ 
-  transactions: [], 
-  categories: [
-    { id: 1, name: "Gaji", type: "income" },
-    { id: 2, name: "Makanan", type: "expense" },
-    { id: 3, name: "Transportasi", type: "expense" },
-    { id: 4, name: "Hiburan", type: "expense" }
-  ],
-  budgets: [] 
-}).write();
-
-console.log("✅ Database db.json berhasil dibuat!");
+createDb(path.join(__dirname, 'db.json'));
+console.log('Database db.json berhasil dibuat.');

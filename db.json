@@ -8,7 +8,8 @@
       "category_id": 1,
       "date": "01/02/2026",
       "month": "2026-02",
-      "timestamp": 1707000000001
+      "timestamp": 1707000000001,
+      "flow": "in"
     },
     {
       "id": 1707000000002,
@@ -18,7 +19,8 @@
       "category_id": 1775645448608,
       "date": "15/02/2026",
       "month": "2026-02",
-      "timestamp": 1707000000002
+      "timestamp": 1707000000002,
+      "flow": "in"
     },
     {
       "id": 1707000000003,
@@ -28,7 +30,8 @@
       "category_id": 1775644086974,
       "date": "02/02/2026",
       "month": "2026-02",
-      "timestamp": 1707000000003
+      "timestamp": 1707000000003,
+      "flow": "out"
     },
     {
       "id": 1707000000004,
@@ -38,7 +41,8 @@
       "category_id": 1775643384306,
       "date": "03/02/2026",
       "month": "2026-02",
-      "timestamp": 1707000000004
+      "timestamp": 1707000000004,
+      "flow": "in"
     },
     {
       "id": 1710000000001,
@@ -48,7 +52,8 @@
       "category_id": 1,
       "date": "01/03/2026",
       "month": "2026-03",
-      "timestamp": 1710000000001
+      "timestamp": 1710000000001,
+      "flow": "in"
     },
     {
       "id": 1710000000002,
@@ -58,17 +63,8 @@
       "category_id": 1775645468095,
       "date": "05/03/2026",
       "month": "2026-03",
-      "timestamp": 1710000000002
-    },
-    {
-      "id": 1710000000003,
-      "description": "nabung",
-      "amount": 1000000,
-      "type": "savings",
-      "category_id": 1775643384306,
-      "date": "10/03/2026",
-      "month": "2026-03",
-      "timestamp": 1710000000003
+      "timestamp": 1710000000002,
+      "flow": "in"
     },
     {
       "id": 1710000000004,
@@ -78,7 +74,8 @@
       "category_id": 1775644086974,
       "date": "11/03/2026",
       "month": "2026-03",
-      "timestamp": 1710000000004
+      "timestamp": 1710000000004,
+      "flow": "out"
     },
     {
       "id": 1712000000001,
@@ -88,7 +85,8 @@
       "category_id": 1,
       "date": "01/04/2026",
       "month": "2026-04",
-      "timestamp": 1712000000001
+      "timestamp": 1712000000001,
+      "flow": "in"
     },
     {
       "id": 1775645502648,
@@ -98,7 +96,8 @@
       "category_id": 1775645468095,
       "date": "04/04/2026",
       "month": "2026-04",
-      "timestamp": 1775645502648
+      "timestamp": 1775645502648,
+      "flow": "in"
     },
     {
       "id": 1775645585841,
@@ -108,17 +107,8 @@
       "category_id": 1775645448608,
       "date": "08/04/2026",
       "month": "2026-04",
-      "timestamp": 1775645585841
-    },
-    {
-      "id": 1775661618465,
-      "description": "narik buat makan",
-      "amount": 200000,
-      "type": "savings",
-      "category_id": 1775643384306,
-      "date": "8/4/2026",
-      "month": "2026-04",
-      "timestamp": 1775661618465
+      "timestamp": 1775645585841,
+      "flow": "in"
     },
     {
       "id": 1775664204084,
@@ -128,7 +118,8 @@
       "category_id": 1775664168379,
       "date": "8/4/2026",
       "month": "2026-04",
-      "timestamp": 1775664204084
+      "timestamp": 1775664204084,
+      "flow": "out"
     },
     {
       "id": 1775748755384,
@@ -138,14 +129,27 @@
       "category_id": 2,
       "date": "9/4/2026",
       "month": "2026-04",
-      "timestamp": 1775748755384
+      "timestamp": 1775748755384,
+      "flow": "out"
+    },
+    {
+      "id": 1776624527508,
+      "description": "all u can eat",
+      "amount": 1435000,
+      "type": "expense",
+      "flow": "out",
+      "category_id": 2,
+      "date": "20/04/2026",
+      "month": "2026-04",
+      "timestamp": 1776624527508
     }
   ],
   "categories": [
     {
       "id": 1,
       "name": "Gaji",
-      "type": "income"
+      "type": "income",
+      "group": "salary"
     },
     {
       "id": 2,
@@ -165,12 +169,14 @@
     {
       "id": 1775645448608,
       "name": "Bonus",
-      "type": "income"
+      "type": "income",
+      "group": "other"
     },
     {
       "id": 1775645468095,
       "name": "Freelance",
-      "type": "income"
+      "type": "income",
+      "group": "other"
     },
     {
       "id": 1775664168379,
@@ -184,56 +190,95 @@
       "amount": 2000000,
       "month": "2026-02",
       "date": "01/02/2026",
-      "timestamp": 1707000000001
+      "timestamp": 1707000000001,
+      "id": 1776608257621
     },
     {
       "category_id": 1775643384306,
       "amount": 1500000,
       "month": "2026-02",
       "date": "01/02/2026",
-      "timestamp": 1707000000002
+      "timestamp": 1707000000002,
+      "id": 1776608257622
     },
     {
       "category_id": 2,
       "amount": 1000000,
       "month": "2026-02",
       "date": "01/02/2026",
-      "timestamp": 1707000000003
+      "timestamp": 1707000000003,
+      "id": 1776608257623
     },
     {
       "category_id": 1775644086974,
       "amount": 2400000,
       "month": "2026-03",
       "date": "01/03/2026",
-      "timestamp": 1710000000001
+      "timestamp": 1710000000001,
+      "id": 1776608257624
     },
     {
       "category_id": 1775643384306,
       "amount": 1200000,
       "month": "2026-03",
       "date": "01/03/2026",
-      "timestamp": 1710000000002
+      "timestamp": 1710000000002,
+      "id": 1776608257625
     },
     {
       "category_id": 2,
       "amount": 600000,
       "month": "2026-03",
       "date": "01/03/2026",
-      "timestamp": 1710000000003
+      "timestamp": 1710000000003,
+      "id": 1776608257626
     },
     {
       "category_id": 3,
       "amount": 600000,
       "month": "2026-03",
       "date": "01/03/2026",
-      "timestamp": 1710000000004
+      "timestamp": 1710000000004,
+      "id": 1776608257627
     },
     {
       "category_id": 2,
       "amount": 1500000,
       "month": "2026-04",
       "timestamp": 1775748653761,
-      "date": "9/4/2026"
+      "date": "9/4/2026",
+      "id": 1776608257628
+    },
+    {
+      "id": 1776608311112,
+      "category_id": 1775643384306,
+      "amount": 1000000,
+      "month": "2026-04",
+      "timestamp": 1776608311112,
+      "date": "19/04/2026"
+    }
+  ],
+  "users": [
+    {
+      "id": 1776628750877,
+      "name": "Test User",
+      "email": "testuser@example.com",
+      "password_hash": "2919bf90a6a73f924c59455cfbc3519e:db74ed3366404c2cdbace412d3ece4a5cfa62baa3ef122e6d66f27f8fc20859691f406e8fb40420c2113c5a069d0e3e6ab361f8332004302d9dbcf576e81a08b",
+      "role": "user"
+    },
+    {
+      "id": 1776629168876,
+      "name": "suf",
+      "email": "suf@gmail.com",
+      "password_hash": "40b1187b19d0f5b31284fabe716248bc:46d91016d01be3ecb988df280c3c9df8a2d977daffa8ed5bc2f52cfc51a8e53576af7a7e54a82e02e6efb79c87a5aea85a02159432f93deffedceb892fd1a9ed",
+      "role": "user"
+    },
+    {
+      "id": 1776825724825,
+      "name": "hadi@gmail.com",
+      "email": "hadi@gmai.com",
+      "password_hash": "58628c490c563078f1c60569d40490bc:55a9baa56715f5f4447e48bd436e946241abf747faa91b2da21045a21ec73ea294da3b7ffbd13860ef56e98ddbc5cfd03f46b771933c3e9e4e07454758bf3ab7",
+      "role": "user"
     }
   ]
 }
