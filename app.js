@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 
 const { CATEGORY_TYPES, DEFAULT_DATA } = require('./src/config/constants');
-const { createDb } = require('./src/data/db');
+const { createMemoryDb, createMongoDb } = require('./src/data/db');
 const { createAuthMiddleware } = require('./src/middleware/authMiddleware');
 const { createAuthController } = require('./src/controllers/authController');
 const { createBudgetsController } = require('./src/controllers/budgetsController');
@@ -20,12 +20,11 @@ const { inferTransactionFlow } = require('./src/services/transactionService');
 const { hashPassword, verifyPassword } = require('./src/utils/password');
 const { parseId, parsePositiveAmount } = require('./src/utils/common');
 
-function createApp(options = {}) {
-  const db = options.db || createDb(options.dbFile);
+async function createApp(options = {}) {
+  const db = options.db || await createMongoDb(options);
   const app = express();
-  const sessions = new Map();
 
-  const authController = createAuthController({ db, sessions });
+  const authController = createAuthController({ db });
   const transactionsController = createTransactionsController({ db });
   const categoriesController = createCategoriesController({ db });
   const budgetsController = createBudgetsController({ db });
@@ -35,7 +34,7 @@ function createApp(options = {}) {
   app.use(express.json());
 
   app.use('/api/auth', createAuthRouter(authController));
-  app.use('/api', createAuthMiddleware({ sessions }));
+  app.use('/api', createAuthMiddleware());
   app.use('/api/transactions', createTransactionsRouter(transactionsController));
   app.use('/api/categories', createCategoriesRouter(categoriesController));
   app.use('/api/budgets', createBudgetsRouter(budgetsController));
@@ -54,7 +53,8 @@ module.exports = {
   DEFAULT_DATA,
   calculateSummary,
   createApp,
-  createDb,
+  createMemoryDb,
+  createMongoDb,
   hashPassword,
   inferIncomeGroup,
   inferTransactionFlow,

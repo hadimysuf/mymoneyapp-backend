@@ -2,8 +2,8 @@ const { calculateSummary } = require('../services/summaryService');
 
 function createSummaryController({ db }) {
   return {
-    show(req, res) {
-      return res.json(calculateSummary(db));
+    async show(req, res) {
+      return res.json(await calculateSummary(db));
     }
   };
 }

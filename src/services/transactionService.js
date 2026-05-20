@@ -24,8 +24,8 @@ function inferTransactionFlow(transaction, category) {
   return 'out';
 }
 
-function getFilteredTransactions(db, excludedTransactionId = null) {
-  const transactions = db.get('transactions').value() || [];
+async function getFilteredTransactions(db, excludedTransactionId = null) {
+  const transactions = await db.listTransactions();
   if (excludedTransactionId === null) {
     return transactions;
   }
@@ -33,7 +33,7 @@ function getFilteredTransactions(db, excludedTransactionId = null) {
   return transactions.filter((transaction) => transaction.id !== excludedTransactionId);
 }
 
-function validateTransactionPayload(db, body, options = {}) {
+async function validateTransactionPayload(db, body, options = {}) {
   const existingTransaction = options.existingTransaction || null;
   const description = normalizeString(body?.description);
   const amount = parsePositiveAmount(body?.amount);
@@ -51,7 +51,7 @@ function validateTransactionPayload(db, body, options = {}) {
     return { error: 'Transaction category_id is invalid.' };
   }
 
-  const category = getCategoryById(db, categoryId);
+  const category = await getCategoryById(db, categoryId);
   if (!category) {
     return { error: 'Transaction category does not exist.' };
   }
@@ -60,14 +60,17 @@ function validateTransactionPayload(db, body, options = {}) {
   const targetMonth = existingTransaction?.month || getCurrentMonth(now);
   const requestedFlow = normalizeString(body?.flow);
   let flow = inferTransactionFlow({ flow: requestedFlow, description }, category);
-  const candidateTransactions = getFilteredTransactions(db, existingTransaction?.id ?? null);
+  const [candidateTransactions, budgets] = await Promise.all([
+    getFilteredTransactions(db, existingTransaction?.id ?? null),
+    db.listBudgets()
+  ]);
 
   if (category.type !== 'savings') {
     flow = inferTransactionFlow({}, category);
   }
 
   if (category.type === 'expense') {
-    const currentBudget = (db.get('budgets').value() || []).find(
+    const currentBudget = budgets.find(
       (budget) => budget.category_id === categoryId && budget.month === targetMonth
     );
 
@@ -88,7 +91,7 @@ function validateTransactionPayload(db, body, options = {}) {
   }
 
   if (category.type === 'savings' && flow === 'in') {
-    const currentBudget = (db.get('budgets').value() || []).find(
+    const currentBudget = budgets.find(
       (budget) => budget.category_id === categoryId && budget.month === targetMonth
     );
 

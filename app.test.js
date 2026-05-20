@@ -1,12 +1,9 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const os = require('node:os');
-const path = require('node:path');
 const http = require('node:http');
 const { once } = require('node:events');
 
-const { createApp, DEFAULT_DATA, hashPassword } = require('./app');
+const { createApp, createMemoryDb, DEFAULT_DATA, hashPassword } = require('./app');
 
 function createSeedData(overrides = {}) {
   return {
@@ -27,11 +24,8 @@ function createSeedData(overrides = {}) {
 }
 
 async function withApi(seedData, run) {
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'finance-backend-'));
-  const dbFile = path.join(tempDir, 'db.json');
-  fs.writeFileSync(dbFile, JSON.stringify(seedData, null, 2));
-
-  const { app, db } = createApp({ dbFile });
+  const db = createMemoryDb(seedData);
+  const { app } = await createApp({ db });
   const server = http.createServer(app);
   server.listen(0);
   await once(server, 'listening');
@@ -43,7 +37,7 @@ async function withApi(seedData, run) {
     await run({ baseUrl, db });
   } finally {
     await new Promise((resolve) => server.close(resolve));
-    fs.rmSync(tempDir, { recursive: true, force: true });
+    await db.close();
   }
 }
 
@@ -92,7 +86,7 @@ test('POST /api/transactions rejects invalid category ids', async () => {
 
     assert.equal(response.status, 400);
     assert.match(response.body.error, /does not exist/i);
-    assert.equal(db.get('transactions').value().length, 0);
+    assert.equal((await db.getCollection('transactions')).length, 0);
   });
 });
 
@@ -151,7 +145,7 @@ test('POST /api/auth/register creates a new user with hashed password and return
     assert.equal(register.body.user.role, 'user');
     assert.ok(register.body.token);
 
-    const storedUser = db.get('users').find({ email: 'alya@example.com' }).value();
+    const storedUser = await db.findOne('users', { email: 'alya@example.com' });
     assert.ok(storedUser);
     assert.ok(storedUser.password_hash);
     assert.notEqual(storedUser.password_hash, 'rahasia123');
@@ -187,7 +181,7 @@ test('POST /api/transactions derives type from the selected category', async () 
 
     assert.equal(response.status, 201);
     assert.equal(response.body.type, 'income');
-    assert.equal(db.get('transactions').value()[0].type, 'income');
+    assert.equal((await db.getCollection('transactions'))[0].type, 'income');
   });
 });
 
@@ -220,7 +214,7 @@ test('DELETE /api/categories blocks categories that are still referenced', async
 
       assert.equal(response.status, 409);
       assert.match(response.body.error, /cannot be deleted/i);
-      assert.ok(db.get('categories').find({ id: 3 }).value());
+      assert.ok(await db.findOne('categories', { id: 3 }));
     }
   );
 });
@@ -440,7 +434,7 @@ test('POST /api/transactions rejects expense transactions above remaining alloca
 
       assert.equal(response.status, 400);
       assert.match(response.body.error, /melebihi sisa alokasi/i);
-      assert.equal(db.get('transactions').value().length, 2);
+      assert.equal((await db.getCollection('transactions')).length, 2);
     }
   );
 });
@@ -491,7 +485,7 @@ test('POST /api/transactions allows savings transactions within allocated amount
       assert.equal(response.status, 201);
       assert.equal(response.body.type, 'savings');
       assert.equal(response.body.flow, 'in');
-      assert.equal(db.get('transactions').value()[1].flow, 'in');
+      assert.equal((await db.getCollection('transactions'))[1].flow, 'in');
     }
   );
 });
@@ -533,7 +527,7 @@ test('POST /api/transactions allows savings withdrawals within available savings
       assert.equal(response.status, 201);
       assert.equal(response.body.type, 'savings');
       assert.equal(response.body.flow, 'out');
-      assert.equal(db.get('transactions').value()[1].flow, 'out');
+      assert.equal((await db.getCollection('transactions'))[1].flow, 'out');
     }
   );
 });
@@ -574,7 +568,7 @@ test('POST /api/transactions rejects savings withdrawals above available savings
 
       assert.equal(response.status, 400);
       assert.match(response.body.error, /melebihi saldo tabungan/i);
-      assert.equal(db.get('transactions').value().length, 1);
+      assert.equal((await db.getCollection('transactions')).length, 1);
     }
   );
 });
@@ -703,7 +697,7 @@ test('PUT /api/transactions updates an existing savings transaction without brea
       assert.equal(response.status, 200);
       assert.equal(response.body.amount, 450000);
       assert.equal(response.body.description, 'Setor tabungan revisi');
-      assert.equal(db.get('transactions').find({ id: 11002 }).value().amount, 450000);
+      assert.equal((await db.findOne('transactions', { id: 11002 })).amount, 450000);
     }
   );
 });
@@ -755,7 +749,7 @@ test('PUT /api/transactions rejects edited savings withdrawals above available b
 
       assert.equal(response.status, 400);
       assert.match(response.body.error, /melebihi saldo tabungan/i);
-      assert.equal(db.get('transactions').find({ id: 12002 }).value().amount, 50000);
+      assert.equal((await db.findOne('transactions', { id: 12002 })).amount, 50000);
     }
   );
 });
