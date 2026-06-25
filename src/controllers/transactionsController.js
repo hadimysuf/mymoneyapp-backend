@@ -3,59 +3,56 @@ const { jsonError, parseId } = require('../utils/common');
 
 function createTransactionsController({ db }) {
   return {
-    list(req, res) {
-      return res.json(db.get('transactions').value());
+    async list(req, res) {
+      return res.json(await db.listTransactions());
     },
 
-    create(req, res) {
-      const result = validateTransactionPayload(db, req.body);
+    async create(req, res) {
+      const result = await validateTransactionPayload(db, req.body);
       if (result.error) {
         return jsonError(res, 400, result.error);
       }
 
-      db.get('transactions').push(result.value).write();
+      await db.createTransaction(result.value);
       return res.status(201).json(result.value);
     },
 
-    update(req, res) {
+    async update(req, res) {
       const transactionId = parseId(req.params.id);
       if (transactionId === null) {
         return jsonError(res, 400, 'Transaction id is invalid.');
       }
 
-      const existingTransaction = db.get('transactions').find({ id: transactionId }).value();
+      const existingTransaction = await db.findTransactionById(transactionId);
       if (!existingTransaction) {
         return jsonError(res, 404, 'Transaction not found.');
       }
 
-      const result = validateTransactionPayload(db, req.body, { existingTransaction });
+      const result = await validateTransactionPayload(db, req.body, { existingTransaction });
       if (result.error) {
         return jsonError(res, 400, result.error);
       }
 
-      db.get('transactions')
-        .find({ id: transactionId })
-        .assign({
-          ...result.value,
-          id: transactionId
-        })
-        .write();
+      const updatedTransaction = await db.updateTransaction(transactionId, {
+        ...result.value,
+        id: transactionId
+      });
 
-      return res.json(db.get('transactions').find({ id: transactionId }).value());
+      return res.json(updatedTransaction);
     },
 
-    remove(req, res) {
+    async remove(req, res) {
       const transactionId = parseId(req.params.id);
       if (transactionId === null) {
         return jsonError(res, 400, 'Transaction id is invalid.');
       }
 
-      const existing = db.get('transactions').find({ id: transactionId }).value();
+      const existing = await db.findTransactionById(transactionId);
       if (!existing) {
         return jsonError(res, 404, 'Transaction not found.');
       }
 
-      db.get('transactions').remove({ id: transactionId }).write();
+      await db.deleteTransaction(transactionId);
       return res.json({ message: 'Deleted' });
     }
   };

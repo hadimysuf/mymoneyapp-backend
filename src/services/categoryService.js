@@ -21,8 +21,8 @@ function normalizeCategoryRecord(category) {
   return normalized;
 }
 
-function getCategoryById(db, categoryId) {
-  return db.get('categories').find({ id: categoryId }).value() || null;
+async function getCategoryById(db, categoryId) {
+  return db.findCategoryById(categoryId);
 }
 
 function buildCategoryPayload(body) {
@@ -53,19 +53,22 @@ function buildCategoryPayload(body) {
   return { value: payload };
 }
 
-function hasDuplicateCategoryName(db, payload) {
-  return (db.get('categories').value() || []).some(
+async function hasDuplicateCategoryName(db, payload) {
+  const categories = await db.listCategories();
+  return categories.some(
     (category) =>
       category.type === payload.type &&
       normalizeString(category.name).toLowerCase() === payload.name.toLowerCase()
   );
 }
 
-function isCategoryReferenced(db, categoryId) {
-  const isUsedInTransactions = (db.get('transactions').value() || []).some(
+async function isCategoryReferenced(db, categoryId) {
+  const [transactions, budgets] = await Promise.all([db.listTransactions(), db.listBudgets()]);
+
+  const isUsedInTransactions = transactions.some(
     (transaction) => transaction.category_id === categoryId
   );
-  const isUsedInBudgets = (db.get('budgets').value() || []).some(
+  const isUsedInBudgets = budgets.some(
     (budget) => budget.category_id === categoryId
   );
 

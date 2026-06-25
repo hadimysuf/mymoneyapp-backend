@@ -8,40 +8,40 @@ const { jsonError, parseId } = require('../utils/common');
 
 function createCategoriesController({ db }) {
   return {
-    list(req, res) {
-      return res.json(db.get('categories').value());
+    async list(req, res) {
+      return res.json(await db.listCategories());
     },
 
-    create(req, res) {
+    async create(req, res) {
       const result = buildCategoryPayload(req.body);
       if (result.error) {
         return jsonError(res, 400, result.error);
       }
 
-      if (hasDuplicateCategoryName(db, result.value)) {
+      if (await hasDuplicateCategoryName(db, result.value)) {
         return jsonError(res, 409, 'Category name already exists for this type.');
       }
 
-      db.get('categories').push(result.value).write();
+      await db.createCategory(result.value);
       return res.status(201).json(result.value);
     },
 
-    remove(req, res) {
+    async remove(req, res) {
       const categoryId = parseId(req.params.id);
       if (categoryId === null) {
         return jsonError(res, 400, 'Category id is invalid.');
       }
 
-      const existing = getCategoryById(db, categoryId);
+      const existing = await getCategoryById(db, categoryId);
       if (!existing) {
         return jsonError(res, 404, 'Category not found.');
       }
 
-      if (isCategoryReferenced(db, categoryId)) {
+      if (await isCategoryReferenced(db, categoryId)) {
         return jsonError(res, 409, 'Category cannot be deleted because it is still referenced by transactions or budgets.');
       }
 
-      db.get('categories').remove({ id: categoryId }).write();
+      await db.deleteCategoryById(categoryId);
       return res.json({ message: 'Deleted' });
     }
   };

@@ -1,5 +1,14 @@
-const path = require('path');
-const { createDb } = require('./src/data/db');
+require('dotenv').config();
 
-createDb(path.join(__dirname, 'db.json'));
-console.log('Database db.json berhasil dibuat.');
+const { createMongoDb } = require('./src/data/db');
+
+async function initializeDatabase() {
+  const db = await createMongoDb();
+  await db.close();
+  console.log('MongoDB connection and indexes initialized successfully.');
+}
+
+initializeDatabase().catch((error) => {
+  console.error('Failed to initialize MongoDB:', error);
+  process.exit(1);
+});

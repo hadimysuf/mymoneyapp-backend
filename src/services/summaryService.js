@@ -3,10 +3,12 @@ const { normalizeCategoryRecord } = require('./categoryService');
 const { getIncomeGroup } = require('./incomeService');
 const { inferTransactionFlow } = require('./transactionService');
 
-function calculateSummary(db) {
-  const transactions = db.get('transactions').value() || [];
-  const budgets = db.get('budgets').value() || [];
-  const categories = db.get('categories').value() || [];
+async function calculateSummary(db) {
+  const [transactions, budgets, categories] = await Promise.all([
+    db.listTransactions(),
+    db.listBudgets(),
+    db.listCategories()
+  ]);
 
   const categoryById = new Map(categories.map((category) => [category.id, normalizeCategoryRecord(category)]));
   const currentMonth = getCurrentMonth();

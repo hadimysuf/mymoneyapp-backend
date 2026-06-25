@@ -31,11 +31,11 @@ function normalizeUserRecord(user) {
   };
 }
 
-function getUserByEmail(db, email) {
-  return db.get('users').find({ email: normalizeEmail(email) }).value() || null;
+async function getUserByEmail(db, email) {
+  return db.findUserByEmail(normalizeEmail(email));
 }
 
-function validateRegisterPayload(db, body) {
+async function validateRegisterPayload(db, body) {
   const name = normalizeString(body?.name);
   const email = normalizeEmail(body?.email);
   const password = normalizeString(body?.password);
@@ -52,7 +52,7 @@ function validateRegisterPayload(db, body) {
     return { error: 'Password minimal 8 karakter.' };
   }
 
-  if (getUserByEmail(db, email)) {
+  if (await getUserByEmail(db, email)) {
     return { error: 'Email sudah terdaftar.' };
   }
 
@@ -67,10 +67,10 @@ function validateRegisterPayload(db, body) {
   };
 }
 
-function validateLoginCredentials(db, body) {
+async function validateLoginCredentials(db, body) {
   const email = normalizeEmail(body?.email);
   const password = normalizeString(body?.password);
-  const user = getUserByEmail(db, email);
+  const user = await getUserByEmail(db, email);
 
   if (!user || !verifyPassword(password, user.password_hash)) {
     return { error: 'Email atau password salah.' };
