@@ -1,11 +1,15 @@
 require('dotenv').config();
 
-const { createApp } = require('./app');
+const { createApp, createMemoryDb } = require('./app');
 
 const PORT = process.env.PORT || 3001;
 
 async function startServer() {
-  const { app, db } = await createApp();
+  const options = process.env.MONGODB_URI ? {} : { db: createMemoryDb() };
+  if (!process.env.MONGODB_URI) {
+    console.warn('⚠️ MONGODB_URI tidak ditemukan, menggunakan In-Memory Database untuk testing lokal.');
+  }
+  const { app, db } = await createApp(options);
   const server = app.listen(PORT, () => console.log(`Backend Finansial siap di http://localhost:${PORT}`));
 
   const shutdown = async () => {
